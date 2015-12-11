@@ -1,0 +1,47 @@
+apply plugin: 'com.android.library'
+
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+version = '1.0.0'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 23
+        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+}
+
+ext {
+    bintrayRepo = "maven"
+    bintrayName = "crop-image-layout"
+
+    publishedGroupId = 'me.littlecheesecake'
+    libraryName = 'CropImageLayout'
+    artifact = 'croplayout'
+
+    libraryDescription = 'Crop image view layout'
+    libraryVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+    developerId = 'yulu'
+    developerName = 'Yu Lu'
+    developerEmail = 'yulu8798@gmail.com'
+}
+
+apply from: '../tools/bintray.gradle'

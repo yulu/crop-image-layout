@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:crop="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_holder"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ddd">
+    <me.littlecheesecake.croplayout.EditPhotoView
+        android:id="@+id/editable_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_margin="20dp"
+        android:background="#fff"
+        crop:crop_corner_color="#FF4081"
+        crop:crop_line_color="#00ffffff"
+        crop:crop_shadow_color="#99FF4081"/>
+</FrameLayout>

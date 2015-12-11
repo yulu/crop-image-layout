@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="crop_line_color" format="color" />
+    <attr name="crop_shadow_color" format="color" />
+    <attr name="crop_corner_color" format="color" />
+
+    <attr name="crop_line_width" format="dimension" />
+    <attr name="crop_corner_length" format="dimension" />
+    <attr name="crop_corner_width" format="dimension" />
+    <attr name="crop_min_length" format="dimension" />
+
+    <declare-styleable name="CropLayout">
+        <attr name="crop_line_color"/>
+        <attr name="crop_shadow_color"/>
+        <attr name="crop_corner_color"/>
+        <attr name="crop_line_width"/>
+        <attr name="crop_corner_length"/>
+        <attr name="crop_corner_width"/>
+        <attr name="crop_min_length"/>
+    </declare-styleable>
+</resources>
