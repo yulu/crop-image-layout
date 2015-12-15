@@ -195,7 +195,7 @@ public class SelectionView extends View implements View.OnTouchListener {
                 int[] loc = new int[2];
                 getLocationOnScreen(loc);
 
-                box.resizeBox(curX, curY - loc[1], diffX, diffY,
+                box.resizeBox(curX - loc[0], curY - loc[1], diffX, diffY,
                         (getWidth() - bitmapWidth) / 2,
                         (getHeight() - bitmapHeight) / 2,
                         (getWidth() + bitmapWidth) / 2,

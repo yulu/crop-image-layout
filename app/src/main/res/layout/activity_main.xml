@@ -11,7 +11,7 @@
         android:id="@+id/editable_image"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_margin="20dp"
+        android:layout_margin="80dp"
         android:background="#fff"
         crop:crop_corner_color="#FF4081"
         crop:crop_line_color="#00ffffff"

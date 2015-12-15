@@ -21,7 +21,8 @@ android {
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    compile 'me.littlecheesecake:croplayout:1.0.0'
+//    compile 'me.littlecheesecake:croplayout:1.0.0'
+    compile project(":croplayout")
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
 }
