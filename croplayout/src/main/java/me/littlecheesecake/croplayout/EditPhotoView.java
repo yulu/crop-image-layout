@@ -69,7 +69,7 @@ public class EditPhotoView extends FrameLayout {
     public void initView(Context context, EditableImage editableImage) {
         this.editableImage = editableImage;
 
-        selectionView = new SelectionView(context, editableImage.getBox(),
+        selectionView = new SelectionView(context,
                 lineWidth, cornerWidth, cornerLength,
                 lineColor, cornerColor, shadowColor, editableImage);
         imageView = new ImageView(context);
@@ -93,7 +93,11 @@ public class EditPhotoView extends FrameLayout {
         editableImage.rotateOriginalImage(90);
 
         //re-calculate and draw selection box
-        selectionView.resetBoxSize(editableImage.getFitSize()[0], editableImage.getFitSize()[1]);
+        editableImage.getBox().setX1(0);
+        editableImage.getBox().setY1(0);
+        editableImage.getBox().setX2(editableImage.getActualSize()[0]);
+        editableImage.getBox().setY2(editableImage.getActualSize()[1]);
+        selectionView.setBoxSize(editableImage, editableImage.getBox(), editableImage.getViewWidth(), editableImage.getViewHeight());
 
         //set bitmap as view
         imageView.setImageBitmap(editableImage.getOriginalImage());

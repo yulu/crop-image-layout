@@ -9,11 +9,18 @@
     android:background="#ddd">
     <me.littlecheesecake.croplayout.EditPhotoView
         android:id="@+id/editable_image"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="200dp"
-        android:layout_margin="80dp"
+        android:layout_margin="20dp"
         android:background="#fff"
         crop:crop_corner_color="#FF4081"
         crop:crop_line_color="#00ffffff"
         crop:crop_shadow_color="#99FF4081"/>
+
+    <Button
+        android:id="@+id/rotate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:text="rotate"/>
 </FrameLayout>

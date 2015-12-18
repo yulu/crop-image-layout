@@ -25,7 +25,7 @@ public class SelectionView extends View implements View.OnTouchListener {
     private int originX;
     private int originY;
 
-    private ScalableBox box;
+    private ScalableBox displayBox;
     private int prevX;
     private int prevY;
 
@@ -40,17 +40,15 @@ public class SelectionView extends View implements View.OnTouchListener {
     private int cornerColor;
     private int shadowColor;
 
-    public SelectionView(Context context, ScalableBox box,
+    public SelectionView(Context context,
                          float lineWidth, float cornerWidth, float cornerLength,
                          int lineColor, int cornerColor, int shadowColor,
                          EditableImage editableImage) {
         super(context);
-        this.box = box;
 
         setOnTouchListener(this);
 
         this.editableImage = editableImage;
-
         this.lineWidth = lineWidth;
         this.cornerWidth = cornerWidth;
         this.cornerLength = cornerLength;
@@ -68,15 +66,17 @@ public class SelectionView extends View implements View.OnTouchListener {
 
         int size = (bitmapWidth < bitmapHeight) ? bitmapWidth:bitmapHeight;
 
-        box.setX1((getWidth() - size) / 2);
-        box.setX2((getWidth() + size) / 2);
-        box.setY1((getHeight() - size) / 2);
-        box.setY2((getHeight() + size) / 2);
+        displayBox.setX1((getWidth() - size) / 2);
+        displayBox.setX2((getWidth() + size) / 2);
+        displayBox.setY1((getHeight() - size) / 2);
+        displayBox.setY2((getHeight() + size) / 2);
 
         invalidate();
     }
 
-    public void setBoxSize(EditableImage editableImage, ScalableBox detectBox, int widthX, int heightY) {
+    public void setBoxSize(EditableImage editableImage, ScalableBox originalBox, int widthX, int heightY) {
+        this.displayBox = new ScalableBox(originalBox.getX1(), originalBox.getY1(), originalBox.getX2(), originalBox.getY2());
+
         this.bitmapWidth = editableImage.getFitSize()[0];
         this.bitmapHeight = editableImage.getFitSize()[1];
         int originX = (widthX - bitmapWidth) / 2;
@@ -84,33 +84,31 @@ public class SelectionView extends View implements View.OnTouchListener {
         this.originX = originX;
         this.originY = originY;
 
-        if (detectBox != null
-                && detectBox.getX1() >= 0
-                && detectBox.getX2() > 0
-                && detectBox.getY1() >= 0
-                && detectBox.getY2() > 0) {
+        if (    originalBox.getX1() >= 0
+                && originalBox.getX2() > 0
+                && originalBox.getY1() >= 0
+                && originalBox.getY2() > 0) {
 
             Log.d(SELECTION_VIEW,
-                    "original box: + (" + detectBox.getX1() + " " + detectBox.getY1() + ")"
-                            + " (" + detectBox.getX2() + " " + detectBox.getY2() + ")");
-
+                    "original box: + (" + originalBox.getX1() + " " + originalBox.getY1() + ")"
+                            + " (" + originalBox.getX2() + " " + originalBox.getY2() + ")");
 
             float scale = ((float) editableImage.getFitSize()[0]) / editableImage.getActualSize()[0];
-            int scaleX1 = (int) Math.ceil((detectBox.getX1() * scale) + originX);
-            int scaleX2 = (int) Math.ceil((detectBox.getX2() * scale) + originX);
-            int scaleY1 = (int) Math.ceil((detectBox.getY1() * scale) + originY);
-            int scaleY2 = (int) Math.ceil((detectBox.getY2() * scale) + originY);
+            int scaleX1 = (int) Math.ceil((originalBox.getX1() * scale) + originX);
+            int scaleX2 = (int) Math.ceil((originalBox.getX2() * scale) + originX);
+            int scaleY1 = (int) Math.ceil((originalBox.getY1() * scale) + originY);
+            int scaleY2 = (int) Math.ceil((originalBox.getY2() * scale) + originY);
 
             //resize the box size to image
-            box.setX1(scaleX1);
-            box.setX2(scaleX2);
-            box.setY1(scaleY1);
-            box.setY2(scaleY2);
+            displayBox.setX1(scaleX1);
+            displayBox.setX2(scaleX2);
+            displayBox.setY1(scaleY1);
+            displayBox.setY2(scaleY2);
         } else {
-            box.setX1(originX);
-            box.setX2(originX + bitmapWidth);
-            box.setY1(originY);
-            box.setY2(originY + bitmapHeight);
+            displayBox.setX1(originX);
+            displayBox.setX2(originX + bitmapWidth);
+            displayBox.setY1(originY);
+            displayBox.setY2(originY + bitmapHeight);
         }
 
         invalidate();
@@ -136,30 +134,30 @@ public class SelectionView extends View implements View.OnTouchListener {
         mPaint.setStrokeWidth(0.0f);
         mPaint.setColor(shadowColor);
 
-        canvas.drawRect(originX, originY, originX + bitmapWidth, box.getY1(), mPaint);
-        canvas.drawRect(originX, box.getY1(), box.getX1(), box.getY2(), mPaint);
-        canvas.drawRect(box.getX2(), box.getY1(), originX + bitmapWidth, box.getY2(), mPaint);
-        canvas.drawRect(originX, box.getY2(), originX + bitmapWidth, originY + bitmapHeight, mPaint);
+        canvas.drawRect(originX, originY, originX + bitmapWidth, displayBox.getY1(), mPaint);
+        canvas.drawRect(originX, displayBox.getY1(), displayBox.getX1(), displayBox.getY2(), mPaint);
+        canvas.drawRect(displayBox.getX2(), displayBox.getY1(), originX + bitmapWidth, displayBox.getY2(), mPaint);
+        canvas.drawRect(originX, displayBox.getY2(), originX + bitmapWidth, originY + bitmapHeight, mPaint);
     }
 
     private void drawLines(Canvas canvas) {
         mPaint.setStrokeWidth(lineWidth);
         mPaint.setColor(lineColor);
 
-        canvas.drawLine(box.getX1(), box.getY1(), box.getX2(), box.getY1(), mPaint);
-        canvas.drawLine(box.getX2(), box.getY1(), box.getX2(), box.getY2(), mPaint);
-        canvas.drawLine(box.getX2(), box.getY2(), box.getX1(), box.getY2(), mPaint);
-        canvas.drawLine(box.getX1(), box.getY2(), box.getX1(), box.getY1(), mPaint);
+        canvas.drawLine(displayBox.getX1(), displayBox.getY1(), displayBox.getX2(), displayBox.getY1(), mPaint);
+        canvas.drawLine(displayBox.getX2(), displayBox.getY1(), displayBox.getX2(), displayBox.getY2(), mPaint);
+        canvas.drawLine(displayBox.getX2(), displayBox.getY2(), displayBox.getX1(), displayBox.getY2(), mPaint);
+        canvas.drawLine(displayBox.getX1(), displayBox.getY2(), displayBox.getX1(), displayBox.getY1(), mPaint);
     }
 
     private void drawCorner(Canvas canvas) {
         mPaint.setStrokeWidth(cornerWidth);
         mPaint.setColor(cornerColor);
 
-        int x1 = box.getX1();
-        int x2 = box.getX2();
-        int y1 = box.getY1();
-        int y2 = box.getY2();
+        int x1 = displayBox.getX1();
+        int x2 = displayBox.getX2();
+        int y1 = displayBox.getY1();
+        int y2 = displayBox.getY2();
 
         int minSize = (int)cornerLength;
 
@@ -195,12 +193,13 @@ public class SelectionView extends View implements View.OnTouchListener {
                 int[] loc = new int[2];
                 getLocationOnScreen(loc);
 
-                box.resizeBox(curX - loc[0], curY - loc[1], diffX, diffY,
+                displayBox.resizeBox(curX - loc[0], curY - loc[1], diffX, diffY,
                         (getWidth() - bitmapWidth) / 2,
                         (getHeight() - bitmapHeight) / 2,
                         (getWidth() + bitmapWidth) / 2,
                         (getHeight() + bitmapHeight) / 2,
                         (int)cornerLength);
+                updateOriginalBox();
 
                 invalidate();
 
@@ -209,11 +208,47 @@ public class SelectionView extends View implements View.OnTouchListener {
                 return true;
             case MotionEvent.ACTION_UP:
                 if (onBoxChangedListener != null) {
-                    ScalableBox originalBox = editableImage.getSearchBox(box);
+                    ScalableBox originalBox = editableImage.getBox();
                     onBoxChangedListener.onChanged(originalBox.getX1(), originalBox.getY1(), originalBox.getX2(), originalBox.getY2());
                 }
         }
         return false;
+    }
+
+    /**
+     * Calculate the relative position of the box w.r.t the bitmap size
+     * Return a new box that can be used in uploading
+     */
+    public void updateOriginalBox() {
+        int viewWidth = editableImage.getViewWidth();
+        int viewHeight = editableImage.getViewHeight();
+        int width = editableImage.getOriginalImage().getWidth();
+        int height = editableImage.getOriginalImage().getHeight();
+
+        float ratio = width / (float)height;
+        float viewRatio = viewWidth / (float)viewHeight;
+        float factor;
+
+        //width dominate, fit w
+        if(ratio > viewRatio) {
+            factor = viewWidth / (float)width;
+        } else {
+            //height dominate, fit h
+            factor = viewHeight / (float)height;
+        }
+
+        float coorX, coorY;
+        coorX = (viewWidth - width*factor) / 2f;
+        coorY = (viewHeight - height*factor) / 2f;
+
+        int originX1 = (displayBox.getX1() - coorX) /factor <= width ? (int)((displayBox.getX1() - coorX)/factor) : width;
+        int originY1 = (displayBox.getY1() - coorY) /factor <= height ? (int)((displayBox.getY1() - coorY)/factor) : height;
+        int originX2 = (displayBox.getX2() - coorX) /factor <= width ? (int)((displayBox.getX2() - coorX)/factor) : width;
+        int originY2 = (displayBox.getY2() - coorY) /factor <= height ? (int)((displayBox.getY2() - coorY)/factor) : height;
+        editableImage.getBox().setX1(originX1);
+        editableImage.getBox().setY1(originY1);
+        editableImage.getBox().setX2(originX2);
+        editableImage.getBox().setY2(originY2);
     }
 
 }
