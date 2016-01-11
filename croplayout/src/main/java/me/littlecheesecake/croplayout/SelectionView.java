@@ -29,6 +29,11 @@ public class SelectionView extends View implements View.OnTouchListener {
     private int prevX;
     private int prevY;
 
+    private int prevBoxX1;
+    private int prevBoxX2;
+    private int prevBoxY1;
+    private int prevBoxY2;
+
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private float lineWidth;
@@ -183,15 +188,19 @@ public class SelectionView extends View implements View.OnTouchListener {
             case MotionEvent.ACTION_DOWN:
                 prevX = curX;
                 prevY = curY;
+
+                prevBoxX1 = editableImage.getBox().getX1();
+                prevBoxX2 = editableImage.getBox().getX2();
+                prevBoxY1 = editableImage.getBox().getY1();
+                prevBoxY2 = editableImage.getBox().getY2();
+
                 return true;
 
             case MotionEvent.ACTION_MOVE:
-
-                int diffX = curX - prevX;
-                int diffY = curY - prevY;
-
                 int[] loc = new int[2];
                 getLocationOnScreen(loc);
+                int diffX = curX - prevX;
+                int diffY = curY - prevY;
 
                 displayBox.resizeBox(curX - loc[0], curY - loc[1], diffX, diffY,
                         (getWidth() - bitmapWidth) / 2,
@@ -207,10 +216,19 @@ public class SelectionView extends View implements View.OnTouchListener {
                 prevY = curY;
                 return true;
             case MotionEvent.ACTION_UP:
-                if (onBoxChangedListener != null) {
-                    ScalableBox originalBox = editableImage.getBox();
+                ScalableBox originalBox = editableImage.getBox();
+                if (onBoxChangedListener != null
+                        &&(prevBoxX1 != originalBox.getX1()
+                        || prevBoxX2 != originalBox.getX2()
+                        || prevBoxY1 != originalBox.getY1()
+                        || prevBoxY2 != originalBox.getY2())) {
                     onBoxChangedListener.onChanged(originalBox.getX1(), originalBox.getY1(), originalBox.getX2(), originalBox.getY2());
                 }
+
+                prevBoxX1 = originalBox.getX1();
+                prevBoxX2 = originalBox.getX2();
+                prevBoxY1 = originalBox.getY1();
+                prevBoxY2 = originalBox.getY2();
         }
         return false;
     }
