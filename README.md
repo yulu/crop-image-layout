@@ -1,13 +1,16 @@
 Image Cropping Layout
 =======
 
+A light-weight image cropping layout, allowing UI customization and cropping box update listener.
+
 > Current Version: 1.0.3
 
 
 ![image-crop](https://raw.githubusercontent.com/yulu/crop-image-layout/master/doc/crop-image.gif)
 
 
-### Import
+Import
+------
 
 ```
 dependencies {
@@ -16,9 +19,10 @@ dependencies {
 }
 ```
 
-### Usage
+Usage
+-----
 
-```
+```java
 EditPhotoView imageView = (EditPhotoView) findViewById(R.id.editable_image);
 EditableImage image = new EditableImage(this, R.drawable.photo2);
 image.setBox(new ScalableBox(25,180,640,880));
@@ -33,9 +37,10 @@ imageView.setOnBoxChangedListener(new OnBoxChangedListener() {
 });
 ```
 
-### UI Customization
+UI Customization
+--------
 
-```
+```xml
 <me.littlecheesecake.croplayout.EditPhotoView
     android:id="@+id/editable_image"
     android:layout_width="300dp"
@@ -48,6 +53,11 @@ imageView.setOnBoxChangedListener(new OnBoxChangedListener() {
 ```
 
 ![image_attr](https://raw.githubusercontent.com/yulu/crop-image-layout/master/doc/crop_attr.png)
+
+
+Developed By
+------------
+Yu Lu @[littlecheesecake.me](http://littlecheesecake.me)
 
 License
 -------
