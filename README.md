@@ -1,9 +1,9 @@
 Image Cropping Layout
 =======
 
-A light-weight image cropping layout, allowing UI customization and cropping box update listener.
+A light-weight image cropping layout, allowing UI customization and cropping box update listener. Image and the selected area (cropping box) is scale and fit into the predefined area.
 
-> Current Version: 1.0.3
+> Current Version: 1.0.5
 
 
 ![image-crop](https://raw.githubusercontent.com/yulu/crop-image-layout/master/doc/crop-image.gif)
@@ -14,7 +14,7 @@ Import
 
 ```
 dependencies {
-    compile 'me.littlecheesecake:croplayout:1.0.3'
+    compile 'me.littlecheesecake:croplayout:1.0.5'
     ...
 }
 ```
@@ -54,6 +54,13 @@ UI Customization
 
 ![image_attr](https://raw.githubusercontent.com/yulu/crop-image-layout/master/doc/crop_attr.png)
 
+
+Known Issue
+---------
+
+- actual cropping of the image is not implemented, but only update the selected area (cropping box)
+- crop box will be reset to the full image after rotation
+- image zoom-in is not supported
 
 Developed By
 ------------
