@@ -1,6 +1,8 @@
 Image Cropping Layout
 =======
 
+[![badge](https://img.shields.io/badge/android%20arsenal-image--crop--layout-brightgreen.svg)](http://android-arsenal.com/details/1/3182#)
+
 A light-weight image cropping layout, allowing UI customization and cropping box update listener. Image and the selected area (cropping box) is scale and fit into the predefined area.
 
 > Current Version: 1.0.5
