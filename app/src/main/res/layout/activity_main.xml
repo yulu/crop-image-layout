@@ -16,7 +16,6 @@
         crop:crop_corner_color="#FF4081"
         crop:crop_line_color="#00ffffff"
         crop:crop_shadow_color="#99FF4081"/>
-
     <Button
         android:id="@+id/rotate_button"
         android:layout_width="wrap_content"
