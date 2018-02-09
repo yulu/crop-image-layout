@@ -3,6 +3,9 @@ package me.littlecheesecake.croplayout;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.littlecheesecake.croplayout.model.ScalableBox;
 import me.littlecheesecake.croplayout.util.ImageHelper;
 
@@ -11,8 +14,10 @@ import me.littlecheesecake.croplayout.util.ImageHelper;
  * Created by yulu on 11/19/14.
  */
 public class EditableImage {
-    private Bitmap          originalImage;
-    private ScalableBox     originalBox;
+    private Bitmap                originalImage;
+    private List<ScalableBox>     originalBoxes;
+    private int                   activeBoxIdx = 0;
+    private ScalableBox           copyOfActiveBox;
 
     private int             viewWidth;
     private int             viewHeight;
@@ -22,14 +27,15 @@ public class EditableImage {
         originalImage = ImageHelper.getBitmapFromPath(localPath);
 
         //init the search box
-        originalBox = new ScalableBox();
+        originalBoxes = new ArrayList<>();
     }
 
     public EditableImage(Context context, int id) {
         originalImage = ImageHelper.getBitmapFromResource(context.getResources(), id);
 
         //init the search box
-        originalBox = new ScalableBox();
+        //init the search box
+        originalBoxes = new ArrayList<>();
     }
 
     public void setViewSize(int viewWidth, int viewHeight) {
@@ -41,12 +47,50 @@ public class EditableImage {
         return originalImage;
     }
 
-    public void setBox(ScalableBox box) {
-        this.originalBox = box;
+    public void setBoxes(List<ScalableBox> boxes) {
+        setBoxes(boxes, 0);
     }
 
-    public ScalableBox getBox() {
-        return originalBox;
+    public void setBoxes(List<ScalableBox> boxes, int activeBoxIdx) {
+        this.originalBoxes = boxes;
+        if (boxes.size() > 0) {
+            try {
+                copyOfActiveBox = (ScalableBox) originalBoxes.get(activeBoxIdx).clone();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+                copyOfActiveBox = new ScalableBox();
+                copyOfActiveBox.setX1(originalBoxes.get(activeBoxIdx).getX1());
+                copyOfActiveBox.setX2(originalBoxes.get(activeBoxIdx).getX2());
+                copyOfActiveBox.setY1(originalBoxes.get(activeBoxIdx).getY1());
+                copyOfActiveBox.setY2(originalBoxes.get(activeBoxIdx).getY2());
+            }
+        }
+    }
+
+    public List<ScalableBox> getBoxes() {
+        return originalBoxes;
+    }
+
+    public int getActiveBoxIdx() {
+        return activeBoxIdx;
+    }
+
+    public void setActiveBoxIdx(int activeBoxIdx) {
+        this.activeBoxIdx = activeBoxIdx;
+        try {
+            copyOfActiveBox = (ScalableBox) originalBoxes.get(activeBoxIdx).clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            copyOfActiveBox = new ScalableBox();
+            copyOfActiveBox.setX1(originalBoxes.get(activeBoxIdx).getX1());
+            copyOfActiveBox.setX2(originalBoxes.get(activeBoxIdx).getX2());
+            copyOfActiveBox.setY1(originalBoxes.get(activeBoxIdx).getY1());
+            copyOfActiveBox.setY2(originalBoxes.get(activeBoxIdx).getY2());
+        }
+    }
+
+    public ScalableBox getActiveBox() {
+        return copyOfActiveBox;
     }
 
     public void rotateOriginalImage(int degree) {
@@ -109,7 +153,7 @@ public class EditableImage {
     }
 
     public String cropOriginalImage(String path, String imageName) {
-        ScalableBox relativeBox = getBox();
+        ScalableBox relativeBox = getActiveBox();
         return ImageHelper.saveImageCropToPath(originalImage,
                 relativeBox.getX1(), relativeBox.getY1(), relativeBox.getX2(), relativeBox.getY2(),
                 path, imageName

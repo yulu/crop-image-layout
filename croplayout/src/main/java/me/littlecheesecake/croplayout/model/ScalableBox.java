@@ -4,7 +4,7 @@ package me.littlecheesecake.croplayout.model;
  * box that can be scaled and moved
  * Created by yulu on 11/12/14.
  */
-public class ScalableBox {
+public class ScalableBox implements Cloneable {
 
     //limit
     private int x1;
@@ -160,4 +160,10 @@ public class ScalableBox {
     private boolean checkLimit(int cornerBoundary) {
         return (x2 - x1) <= cornerBoundary * 2 || (y2 - y1) <= cornerBoundary * 2;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return (ScalableBox)super.clone();
+    }
+
 }

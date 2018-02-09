@@ -19,6 +19,7 @@
             android:background="#fff"
             crop:crop_corner_color="#45B4CA"
             crop:crop_line_color="#d7af55"
+            crop:crop_dot_color="#333333"
             crop:crop_shadow_color="#77ffffff"/>
 
         <TextView

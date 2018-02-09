@@ -4,8 +4,9 @@ Image Cropping Layout
 [![badge](https://img.shields.io/badge/android%20arsenal-crop--image--layout-brightgreen.svg)](http://android-arsenal.com/details/1/3182#)
 
 A light-weight image cropping layout, allowing UI customization and cropping box update listener. Image and the selected area (cropping box) is scale and fit into the predefined area.
+In the latest release, multiple boxes are supported.
 
-> Current Version: 1.0.5
+> Current Version: 1.1.3
 
 
 ![image-crop](https://raw.githubusercontent.com/yulu/crop-image-layout/master/doc/crop-image.gif)
@@ -16,7 +17,7 @@ Import
 
 ```
 dependencies {
-    compile 'me.littlecheesecake:croplayout:1.0.5'
+    compile 'me.littlecheesecake:croplayout:1.1.3'
     ...
 }
 ```
@@ -25,16 +26,23 @@ Usage
 -----
 
 ```java
-EditPhotoView imageView = (EditPhotoView) findViewById(R.id.editable_image);
-EditableImage image = new EditableImage(this, R.drawable.photo2);
-image.setBox(new ScalableBox(25,180,640,880));
+final EditPhotoView imageView = (EditPhotoView) findViewById(R.id.editable_image);
+final EditableImage image = new EditableImage(this, R.drawable.photo2);
 
+ScalableBox box1 = new ScalableBox(25,180,640,880);
+ScalableBox box2 = new ScalableBox(2,18,680,880);
+ScalableBox box3 =  new ScalableBox(250,80,400,880);
+List<ScalableBox> boxes = new ArrayList<>();
+boxes.add(box1);
+boxes.add(box2);
+boxes.add(box3);
+image.setBoxes(boxes);
 imageView.initView(this, image);
 
 imageView.setOnBoxChangedListener(new OnBoxChangedListener() {
     @Override
     public void onChanged(int x1, int y1, int x2, int y2) {
-        //TODO: cropping box updated 
+        boxText.setText("box: [" + x1 + "," + y1 +"],[" + x2 + "," + y2 + "]");
     }
 });
 ```
@@ -51,6 +59,7 @@ UI Customization
     android:background="#fff"
     crop:crop_corner_color="#45B4CA"
     crop:crop_line_color="#d7af55"
+    crop:crop_dot_color="#333333"
     crop:crop_shadow_color="#77ffffff"/>
 ```
 

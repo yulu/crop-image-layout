@@ -30,6 +30,7 @@ public class EditPhotoView extends FrameLayout {
     private float cornerLength;
     private int lineColor;
     private int cornerColor;
+    private int dotColor;
     private int shadowColor;
 
     public EditPhotoView(Context context) {
@@ -55,7 +56,7 @@ public class EditPhotoView extends FrameLayout {
         if (editableImage != null) {
             editableImage.setViewSize(w, h);
             imageView.setImageBitmap(editableImage.getOriginalImage());
-            selectionView.setBoxSize(editableImage, editableImage.getBox(), w, h);
+            selectionView.setBoxSize(editableImage, editableImage.getBoxes(), w, h);
         }
 
         super.onSizeChanged(w, h, oldw, oldh);
@@ -71,7 +72,7 @@ public class EditPhotoView extends FrameLayout {
 
         selectionView = new SelectionView(context,
                 lineWidth, cornerWidth, cornerLength,
-                lineColor, cornerColor, shadowColor, editableImage);
+                lineColor, cornerColor, dotColor, shadowColor, editableImage);
         imageView = new ImageView(context);
 
         imageView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -93,11 +94,11 @@ public class EditPhotoView extends FrameLayout {
         editableImage.rotateOriginalImage(90);
 
         //re-calculate and draw selection box
-        editableImage.getBox().setX1(0);
-        editableImage.getBox().setY1(0);
-        editableImage.getBox().setX2(editableImage.getActualSize()[0]);
-        editableImage.getBox().setY2(editableImage.getActualSize()[1]);
-        selectionView.setBoxSize(editableImage, editableImage.getBox(), editableImage.getViewWidth(), editableImage.getViewHeight());
+        editableImage.getActiveBox().setX1(0);
+        editableImage.getActiveBox().setY1(0);
+        editableImage.getActiveBox().setX2(editableImage.getActualSize()[0]);
+        editableImage.getActiveBox().setY2(editableImage.getActualSize()[1]);
+        selectionView.setBoxSize(editableImage, editableImage.getBoxes(), editableImage.getViewWidth(), editableImage.getViewHeight());
 
         //set bitmap as view
         imageView.setImageBitmap(editableImage.getOriginalImage());
@@ -108,6 +109,7 @@ public class EditPhotoView extends FrameLayout {
 
         lineWidth = ta.getDimension(R.styleable.CropLayout_crop_line_width, dp2px(LINE_WIDTH));
         lineColor = ta.getColor(R.styleable.CropLayout_crop_line_color, Color.parseColor("#ffffff"));
+        dotColor = ta.getColor(R.styleable.CropLayout_crop_dot_color, Color.parseColor("#ffffff"));
         cornerWidth = ta.getDimension(R.styleable.CropLayout_crop_corner_width, dp2px(LINE_WIDTH * 2));
         cornerLength = ta.getDimension(R.styleable.CropLayout_crop_corner_length, dp2px(CORNER_LENGTH));
         cornerColor = ta.getColor(R.styleable.CropLayout_crop_corner_color, Color.parseColor("#ffffff"));

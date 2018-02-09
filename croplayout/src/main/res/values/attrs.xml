@@ -3,6 +3,7 @@
     <attr name="crop_line_color" format="color" />
     <attr name="crop_shadow_color" format="color" />
     <attr name="crop_corner_color" format="color" />
+    <attr name="crop_dot_color" format="color" />
 
     <attr name="crop_line_width" format="dimension" />
     <attr name="crop_corner_length" format="dimension" />
@@ -13,6 +14,7 @@
         <attr name="crop_line_color"/>
         <attr name="crop_shadow_color"/>
         <attr name="crop_corner_color"/>
+        <attr name="crop_dot_color"/>
         <attr name="crop_line_width"/>
         <attr name="crop_corner_length"/>
         <attr name="crop_corner_width"/>
