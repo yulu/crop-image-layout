@@ -9,6 +9,8 @@ import java.util.List;
 import me.littlecheesecake.croplayout.model.ScalableBox;
 import me.littlecheesecake.croplayout.util.ImageHelper;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 /**
  * Editable image, manage bitmap rotation, calculate fit size and search box size
  * Created by yulu on 11/19/14.
@@ -16,7 +18,7 @@ import me.littlecheesecake.croplayout.util.ImageHelper;
 public class EditableImage {
     private Bitmap                originalImage;
     private List<ScalableBox>     originalBoxes;
-    private int                   activeBoxIdx = 0;
+    private int                   activeBoxIdx = -1;
     private ScalableBox           copyOfActiveBox;
 
     private int             viewWidth;
@@ -48,12 +50,15 @@ public class EditableImage {
     }
 
     public void setBoxes(List<ScalableBox> boxes) {
-        setBoxes(boxes, 0);
+        if (boxes != null && boxes.size() > 0) {
+            this.activeBoxIdx = 0;
+            setBoxes(boxes, this.activeBoxIdx);
+        }
     }
 
     public void setBoxes(List<ScalableBox> boxes, int activeBoxIdx) {
-        this.originalBoxes = boxes;
-        if (boxes.size() > 0) {
+        if (boxes != null && boxes.size() > 0) {
+            this.originalBoxes = boxes;
             try {
                 copyOfActiveBox = (ScalableBox) originalBoxes.get(activeBoxIdx).clone();
             } catch (CloneNotSupportedException e) {

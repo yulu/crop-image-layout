@@ -134,47 +134,53 @@ public class SelectionView extends View implements View.OnTouchListener {
         mPaint.setStrokeWidth(0.0f);
         mPaint.setColor(shadowColor);
 
-        ScalableBox displayBox = displayBoxes.get(editableImage.getActiveBoxIdx());
-        canvas.drawRect(originX, originY, originX + bitmapWidth, displayBox.getY1(), mPaint);
-        canvas.drawRect(originX, displayBox.getY1(), displayBox.getX1(), displayBox.getY2(), mPaint);
-        canvas.drawRect(displayBox.getX2(), displayBox.getY1(), originX + bitmapWidth, displayBox.getY2(), mPaint);
-        canvas.drawRect(originX, displayBox.getY2(), originX + bitmapWidth, originY + bitmapHeight, mPaint);
+        if (displayBoxes != null && displayBoxes.size() > 0) {
+            ScalableBox displayBox = displayBoxes.get(editableImage.getActiveBoxIdx());
+            canvas.drawRect(originX, originY, originX + bitmapWidth, displayBox.getY1(), mPaint);
+            canvas.drawRect(originX, displayBox.getY1(), displayBox.getX1(), displayBox.getY2(), mPaint);
+            canvas.drawRect(displayBox.getX2(), displayBox.getY1(), originX + bitmapWidth, displayBox.getY2(), mPaint);
+            canvas.drawRect(originX, displayBox.getY2(), originX + bitmapWidth, originY + bitmapHeight, mPaint);
+        }
     }
 
     private void drawLines(Canvas canvas) {
         mPaint.setStrokeWidth(lineWidth);
         mPaint.setColor(lineColor);
 
-        ScalableBox displayBox = displayBoxes.get(editableImage.getActiveBoxIdx());
-        canvas.drawLine(displayBox.getX1(), displayBox.getY1(), displayBox.getX2(), displayBox.getY1(), mPaint);
-        canvas.drawLine(displayBox.getX2(), displayBox.getY1(), displayBox.getX2(), displayBox.getY2(), mPaint);
-        canvas.drawLine(displayBox.getX2(), displayBox.getY2(), displayBox.getX1(), displayBox.getY2(), mPaint);
-        canvas.drawLine(displayBox.getX1(), displayBox.getY2(), displayBox.getX1(), displayBox.getY1(), mPaint);
+        if (displayBoxes != null && displayBoxes.size() > 0) {
+            ScalableBox displayBox = displayBoxes.get(editableImage.getActiveBoxIdx());
+            canvas.drawLine(displayBox.getX1(), displayBox.getY1(), displayBox.getX2(), displayBox.getY1(), mPaint);
+            canvas.drawLine(displayBox.getX2(), displayBox.getY1(), displayBox.getX2(), displayBox.getY2(), mPaint);
+            canvas.drawLine(displayBox.getX2(), displayBox.getY2(), displayBox.getX1(), displayBox.getY2(), mPaint);
+            canvas.drawLine(displayBox.getX1(), displayBox.getY2(), displayBox.getX1(), displayBox.getY1(), mPaint);
+        }
     }
 
     private void drawCorner(Canvas canvas) {
         mPaint.setStrokeWidth(cornerWidth);
         mPaint.setColor(cornerColor);
 
-        ScalableBox displayBox = displayBoxes.get(editableImage.getActiveBoxIdx());
-        int x1 = displayBox.getX1();
-        int x2 = displayBox.getX2();
-        int y1 = displayBox.getY1();
-        int y2 = displayBox.getY2();
+        if (displayBoxes != null && displayBoxes.size() > 0) {
+            ScalableBox displayBox = displayBoxes.get(editableImage.getActiveBoxIdx());
+            int x1 = displayBox.getX1();
+            int x2 = displayBox.getX2();
+            int y1 = displayBox.getY1();
+            int y2 = displayBox.getY2();
 
-        int minSize = (int) cornerLength;
+            int minSize = (int) cornerLength;
 
-        canvas.drawLine(x1 - offset_2, y1 - offset, x1 - offset + minSize, y1 - offset, mPaint);
-        canvas.drawLine(x1 - offset, y1 - offset_2, x1 - offset, y1 - offset + minSize, mPaint);
+            canvas.drawLine(x1 - offset_2, y1 - offset, x1 - offset + minSize, y1 - offset, mPaint);
+            canvas.drawLine(x1 - offset, y1 - offset_2, x1 - offset, y1 - offset + minSize, mPaint);
 
-        canvas.drawLine(x2 + offset_2, y1 - offset, x2 + offset - minSize, y1 - offset, mPaint);
-        canvas.drawLine(x2 + offset, y1 - offset_2, x2 + offset, y1 - offset + minSize, mPaint);
+            canvas.drawLine(x2 + offset_2, y1 - offset, x2 + offset - minSize, y1 - offset, mPaint);
+            canvas.drawLine(x2 + offset, y1 - offset_2, x2 + offset, y1 - offset + minSize, mPaint);
 
-        canvas.drawLine(x1 - offset_2, y2 + offset, x1 - offset + minSize, y2 + offset, mPaint);
-        canvas.drawLine(x1 - offset, y2 + offset_2, x1 - offset, y2 + offset - minSize, mPaint);
+            canvas.drawLine(x1 - offset_2, y2 + offset, x1 - offset + minSize, y2 + offset, mPaint);
+            canvas.drawLine(x1 - offset, y2 + offset_2, x1 - offset, y2 + offset - minSize, mPaint);
 
-        canvas.drawLine(x2 + offset_2, y2 + offset, x2 + offset - minSize, y2 + offset, mPaint);
-        canvas.drawLine(x2 + offset, y2 + offset_2, x2 + offset, y2 + offset - minSize, mPaint);
+            canvas.drawLine(x2 + offset_2, y2 + offset, x2 + offset - minSize, y2 + offset, mPaint);
+            canvas.drawLine(x2 + offset, y2 + offset_2, x2 + offset, y2 + offset - minSize, mPaint);
+        }
     }
 
     private void expandBox(Canvas canvas) {
@@ -313,8 +319,13 @@ public class SelectionView extends View implements View.OnTouchListener {
         if (animatingExpanding) {
             return false;
         }
+
         // or box scaling and moving
         int activeIdx = editableImage.getActiveBoxIdx();
+        if (activeIdx < 0) {
+            return false;
+        }
+
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 prevX = curX;

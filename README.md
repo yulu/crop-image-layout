@@ -6,7 +6,7 @@ Image Cropping Layout
 A light-weight image cropping layout, allowing UI customization and cropping box update listener. Image and the selected area (cropping box) is scale and fit into the predefined area.
 In the latest release, multiple boxes are supported.
 
-> Current Version: 1.1.3
+> Current Version: 1.1.5
 
 
 ![image-crop](https://raw.githubusercontent.com/yulu/crop-image-layout/master/doc/crop-image.gif)
@@ -17,7 +17,7 @@ Import
 
 ```
 dependencies {
-    compile 'me.littlecheesecake:croplayout:1.1.3'
+    compile 'me.littlecheesecake:croplayout:1.1.5'
     ...
 }
 ```
