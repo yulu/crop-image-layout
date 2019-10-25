@@ -1,17 +1,17 @@
 apply plugin: 'com.android.library'
 
 def versionMajor = 1
-def versionMinor = 1
-def versionPatch = 5
-version = '1.1.5'
+def versionMinor = 2
+def versionPatch = 0
+version = '1.2.0'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
-        minSdkVersion 11
-        targetSdkVersion 23
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
@@ -25,7 +25,7 @@ android {
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:28.0.0'
 }
 
 ext {
